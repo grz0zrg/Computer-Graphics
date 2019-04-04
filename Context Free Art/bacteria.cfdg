@@ -1,0 +1,25 @@
+startshape bacteria
+
+background { b 0 }
+
+rule bacteria {
+	1024 * { r 90 } c { } 
+}
+
+rule c {
+	p { s .4 }
+	c { x .8 y .1 s .98 r 10 hue 10 }
+}
+
+rule c 2 {
+	p { s 0.7 }
+	c { x .9 s .999998 r -40 hue 10 a -.2 }
+}
+
+rule p {
+	CIRCLE { r -45 sat .8 hue 250 b .4 a -.85 }
+}
+
+rule p .6 {
+	CIRCLE { r -45 sat .8 hue 260 b .4 a -.8 }
+}

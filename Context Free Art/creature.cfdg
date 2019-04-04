@@ -1,0 +1,35 @@
+startshape boty
+
+background { b -1 } 
+rule boty 
+{ 
+	br { hue 120.0 sat 0.6 b 10.0 } 
+	br { flip 180 x 20 r 2 hue 90 sat 0.9 b 0.8 }
+} 
+
+rule br
+{
+	br3 { r 60 }
+	br3 { r 62 }
+
+	br4 { f -90 }
+
+	br { r 16 s 0.93 x 2 }
+}
+
+rule br3
+{
+	CIRCLE { x 2 y 2 s 4 sat 0.8 a -0.75 hue 70 }
+	CIRCLE { x 2 y 2 s 2 hue 125 a -0.75 }
+	TRIANGLE { x 2 y 2 a -0.80 hue 70 }
+	SQUARE { x 2 y 2 a -0.90 hue 160 }
+	br3 { r 1.6 x 2 y 2 s .942 }
+}
+
+rule br4
+{
+	TRIANGLE { x 2 y 2 a -0.80 hue 70 }
+	SQUARE { x 4 y 2 a -0.90 hue 110 }
+	CIRCLE { x 2 y 2 s 2 hue 125 }
+	br4 {x 4 r 130 s .2 b .0005 } 
+}
