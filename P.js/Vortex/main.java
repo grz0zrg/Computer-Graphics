@@ -21,12 +21,12 @@ void draw() {
  // background(0, 0, 0, 1);
   noStroke();
   
-  fill(0, 0, 0, 48);
+  fill(0, 0, 0, 32);
 	rect(0, 0, width, height);
 	
 	noFill();
   
-  float count = 9;
+  float count = 12;
   
   float i = 0; float j = 0;
   
@@ -41,10 +41,10 @@ void draw() {
     
     float inorm_i = abs(0.5 - norm_i) * 2;
     
-    float n = noise(inorm_i + xmotion, jnorm_j + ymotion) / 32;
+    float n = noise(inorm_i + xmotion, jnorm_j + ymotion) / 128;
 		
-		float rad1 = radius + cos(xmotion * PI * 4 + inorm_i * PI * 32 + jnorm_j * PI * 4) / (0.4 + abs(sin(xmotion) * 2));
-		float rad2 = radius + sin(ymotion * PI * 4 + inorm_i * PI * 32 + jnorm_j * PI * 4) / (0.4 + abs(cos(zmotion) * 2));
+		float rad1 = radius + cos(xmotion * PI * 4 + inorm_i * PI * 32 + jnorm_j * PI * 8) / (0.4 + abs(sin(xmotion) * 2));
+		float rad2 = radius + sin(ymotion * PI * 4 + inorm_i * PI * 32 + jnorm_j * PI * 8) / (0.4 + abs(cos(zmotion) * 2));
 
     float cx = rad1 * sin(norm_i * PI * 2 + n * 4 + xmotion + (j * PI * 2)) + sin(xmotion*2) * 24;
     float cy = rad1 * cos(norm_i * PI * 2 + n * 4 + ymotion + (j * PI * 2)) + cos(ymotion*2) * 24;
@@ -55,7 +55,7 @@ void draw() {
     //stroke(0, 0, 0, 128);
     //line(x + cx, y + cy, x + cx2, y + cy2);
     //line(x + cx / 2, y + cy / 2, x + cx2 / 2, y + cy2 / 2);
-		stroke(120 + inorm_i * 120 + jnorm_j * 90, 128 * (1-j), 256, 256 * (n * 32));
+		stroke(192 + inorm_i * 128 + jnorm_j * 128, 128 * (1-j), 256, 256 * (n * 32));
 
     line(x + cx / j, y + cy / j, x + cx2 / j, y + cy2 / j);
 
