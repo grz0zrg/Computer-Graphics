@@ -1,0 +1,87 @@
+// random bezier with feedback rules
+// reducing shapes size uniformly has some interesting properties as well
+
+float xmotion = 8.8;
+float ymotion = 2.2;
+
+int reset = 0;
+int perlin_amount = 2;
+
+void draw_func() {
+	noStroke();
+	
+	loadPixels();
+	for (int y = 0; y < height; y += 1) {
+		int yy = y * width;
+		for (int x = 0; x < width; x += 1) {
+			color p = pixels[yy + x];
+			
+			float xm = 4;
+			float ym = 128 - pow((frameCount - reset) * 7, 0.9);//(frameCount - reset) * 7;
+			
+			if ((brightness(p) > xm && brightness(p) < ym)) {
+				float normx = (float)x / width;
+				float normy = (float)y / height;
+				float anormx = 1.0 - abs(0.5 - normx) * 2;
+				float anormy = 1.0 - abs(0.5 - normy) * 2;
+				float anormxy = anormx * normy;
+				
+				float xk = xmotion / 128;
+				float yk = ymotion / 128;
+				
+				float n = (0.5-noise(anormx+xk,anormy+yk)) * perlin_amount;
+				
+				fill(0, 0, 256, 12);
+				
+				ellipse(x + n, y + n + 4, 5 * anormx, 5 * anormy);
+				ellipse(width - x + n, y + n + 4, 5 * anormx, 5 * anormy);
+			}
+		}
+	}
+	
+	noFill();
+	noStroke();
+
+	rectMode(CENTER);
+	ellipseMode(CENTER);
+
+	stroke(0, 0, 255 * random(), 16);
+	strokeWeight(1 + random(8));
+	noFill();
+	int n = random(width / 2);
+	//ellipse(random(width / 2), random(height / 2), n, n);
+	bezier(random(width / 2), random(height), random(width / 2), random(height), random(width / 2), random(height), random(width / 2), random(height));
+	strokeWeight(1 + random(8));
+	bezier(random(width / 2), random(height), random(width / 2), random(height), random(width / 2), random(height), random(width / 2), random(height));
+
+	rectMode(CORNER);
+	
+	xmotion += 2.75;
+	ymotion += 1.8;
+}
+
+void setup() {
+  size(800, 800);
+
+  background(0);
+	
+	colorMode(HSB, 360, 256, 256);
+	
+	noiseDetail(7,0.7);
+	
+	frameRate(60);
+	
+	//smooth();
+}
+
+void mouseClicked() {
+	background(0);
+	
+	reset = frameCount;
+	
+	perlin_amount = random(2, 4);
+}
+
+void draw() {
+  draw_func();
+}
