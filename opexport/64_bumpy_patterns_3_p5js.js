@@ -17,7 +17,7 @@ function setup() {
 	context.shadowBlur = 2; // more can be fun also
 	context.shadowColor = "black";
 	
-	rectMode(CENTER, CENTER);
+	rectMode(CENTER);
 }
 
 let xmotion = 0;
