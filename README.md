@@ -5,7 +5,7 @@ These can be sorted into either art or exploration / study of algorithms / conce
 
 Some of the starting one are from 2006. (Context Free Art)
 
-This include generative art (algorithmic art), tiny code autonomous drawing algorithms (IFS, feedback), video experiments, 3d, software rendering, some shaders, unfinished games / engines mostly done for the rendering / technical aspect such as a Wargame hex tile engine, tile based multilayer OARPG etc. with code varying in quality. Some may not work anymore due to Web API changes.
+This include generative art (algorithmic art), tiny code autonomous drawing algorithms (IFS, feedback), video experiments, 3d, software rendering, some shaders.
 
 `NoCode` directory contain images / videos produced with variant OR unreleased / lost code
 
