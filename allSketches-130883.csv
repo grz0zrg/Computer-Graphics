@@ -1,4 +1,1986 @@
 "sketch ID","title","code title","code"
+"1252574","Psyc 3","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 100
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 1e1+i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount/200000
+	
+	let px, py
+	
+	for (let i = 100; i--;){
+		let ni = (0.5-i / 2000)*2
+		for (let k = 1; k < n; k += 1) {
+			let nk = (0.5 - k / n)*2
+		
+			let t = e**e/nk*PI*2000
+			
+			x[k] -= (ni * cos(t)*2 + nk * sin(1/t**e))/8000
+			y[k] += (ni * sin(t)*2 - nk * cos(t**e))/8000
+			
+			c = acos(sin(x[k]/2+nk)) / 1.5708
+			d = acos(sin(y[k]/2+nk)) / 1.5708
+
+			px = ((floor(c * width)) + width/4) % width
+			py = ((floor(d * height)) + height/4) % height
+
+			let index1 = (px + py * width) * 4
+			let index2 = ((width - px) + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+			
+			let r = ((k/8+(frameCount>>5))&7) * (1-abs(0.5 - (px / width * py / height)) * 2)
+			let g = 1 * (1-abs(0.5 - (px / width * py / height)) * 2)
+			let b = ((i+(frameCount>>4))&7) * (1-abs(0.5 - (px / width * py / height)) * 2)
+
+			pixels[index1+0] += r
+			pixels[index1+1] += g
+			pixels[index1+2] += b
+			
+			let index1i = width * height * 4 - index1
+			pixels[index1i+0] += r
+			pixels[index1i+1] += g
+			pixels[index1i+2] += b
+			
+			pixels[index2+0] += r
+			pixels[index2+1] += g
+			pixels[index2+2] += b
+			
+			let index2i = width * height * 4 - index2
+			pixels[index2i+0] += r
+			pixels[index2i+1] += g
+			pixels[index2i+2] += b
+		}
+	}
+	updatePixels()
+}"
+"1252564","Oscs","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 10
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount / 500
+	
+	let px, py
+	
+	for (let i = 500; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = (0.5 - k / n)*2
+		
+			x[k] += /*0.000001 + */sin(e*e**nk*PI*2)/5000
+			y[k] += /*0.000001 - */cos(e*e**nk*PI*2)/5000
+			
+			c = (sin(x[k]/3)) / 1.5708/1.5
+			d = (sin(y[k]/3)) / 1.5708/1.5
+
+			px = ((floor(c * width)) + width/2) % width
+			py = ((floor(d * height)) + height/2) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (x[k]*1+(acos(sin(frameCount/10)) / 1.5708/1.5)*4)*sin(e/100)
+			pixels[index+1] += 1
+			pixels[index+2] += (i+(frameCount>>6))&3
+		}
+	}
+	updatePixels()
+}"
+"1251950","Natural 10 colorful","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let pal = [[94, 81, 42], [90, 73, 47], [86, 69, 59], [84, 84, 71], [106, 58, 48], [105, 84, 37]]
+
+let x = []
+let y = []
+
+let n = 100
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = -i * 4
+		y[i] = i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /10)*1;
+	context.shadowOffsetY = cos(frameCount /40)*1;
+	context.shadowBlur = 1; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.25)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 5000
+	
+	for (let i = 10; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*(1e10+k*100))/200
+			y[k] += /*0.000001 - */cos(e*(1e10+k*100))/200
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width))) % width
+			let py = ((floor(d * height))) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			
+			if (random() > 0.9) {
+				let p = pal[k % pal.length]
+				fill(p[0]/2 + ((frameCount/20+k/2)%60 - 30)*4, p[1], p[2]*1, 0.05)
+				let spread = 12
+				circle(px+random(-spread, spread), py+random(-spread, spread), random() * 16)
+			}
+
+			//fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			let p = pal[k % pal.length]
+			fill(p[0]/1.5 + ((frameCount/20+k/2)%60 - 30)*4, p[1]*1.25, p[2]*1.5)
+			circle(px, py, 2)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251929","Natural 14","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let pal = [[94, 81, 42], [90, 73, 47], [86, 69, 59], [84, 84, 71], [106, 58, 48], [105, 84, 37]]
+
+let x = []
+let y = []
+
+let n = 100
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(900, 900)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = 0
+		y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	noFill()
+	var context = drawingContext
+	context.shadowOffsetX = 1;
+	context.shadowOffsetY = 1;
+	context.shadowBlur = 1; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.25)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 5
+	
+	for (let i = 20; i--;){
+		for (let k = 1; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.0001 + */sin(e*(1e9+k*2))/200
+			y[k] += 0.004*c*d - cos(e*(1e9+k*2))/200
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width)+k * (width / 100))) % width
+			let py = ((floor(d * height)))
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			
+			if (random() > 0.9) {
+				let p = pal[k % pal.length]
+				noStroke()
+				fill(p[0]-64*min(1,frameCount / 940), p[1], p[2]*2, max(0, 1 - frameCount / 140))
+				let spread = 8 * min(1, frameCount / 400)
+				circle(px+random(-spread, spread), py+random(-spread, spread), random() * 8)
+			}
+
+			//fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			noFill()
+			let p = pal[k % pal.length]
+			stroke(p[0]+60*min(1,frameCount / 440), p[1], p[2]*1.35, max(0, 1 - frameCount / 240))
+			circle(px, py, 8+16*max(0, 1 - frameCount / 200))
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251920","Natural 13","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let pal = [[94, 81, 42], [90, 73, 47], [86, 69, 59], [84, 84, 71], [106, 58, 48], [105, 84, 37]]
+
+let x = []
+let y = []
+
+let n = 150
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(900, 900)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = 0
+		y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*1;
+	context.shadowOffsetY = cos(frameCount /100)*1;
+	context.shadowBlur = 1; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.75)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 50
+	
+	for (let i = 10; i--;){
+		for (let k = 1; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.0001 + */sin(e-(1e1+k*2))/400
+			y[k] += 0.001 - cos(e+(1e1+k*2))/400
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width)+k * (width / 150))) % width
+			let py = ((floor(d * height)))
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			
+			if (random() > 0.9) {
+				let p = pal[k % pal.length]
+				fill(p[0]/4+160*min(1,frameCount / 440), p[1], p[2]*2, max(0, 1 - frameCount / 140))
+				let spread = 8 * min(1, frameCount / 400)
+				circle(px+random(-spread, spread), py+random(-spread, spread), random() * 40)
+			}
+
+			//fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			let p = pal[k % pal.length]
+			fill(p[0]/2+160*min(1,frameCount / 440), p[1], p[2]*1.35*(frameCount / 200), max(0, 1 - frameCount / 740))
+			circle(px, py, 4)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251904","Natural 12","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let pal = [[94, 81, 42], [90, 73, 47], [86, 69, 59], [84, 84, 71], [106, 58, 48], [105, 84, 37]]
+
+let x = []
+let y = []
+
+let n = 150
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(900, 900)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = 0
+		y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*1;
+	context.shadowOffsetY = cos(frameCount /100)*1;
+	context.shadowBlur = 2; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.75)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 50000
+	
+	for (let i = 10; i--;){
+		for (let k = 1; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += 0.001 + sin(e*(1e9+k*1))/1500
+			y[k] += 0.001 - cos(e*(1e9+k*1))/1500
+			
+			c = acos(sin(x[k]/3)) / 1.5708
+			d = acos(sin(y[k]/3)) / 1.5708
+
+			let px = ((floor(c * width)+k * (width / 150))) % width
+			let py = ((floor(d * height)))
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			
+			if (random() > 0.9) {
+				let p = pal[k % pal.length]
+				fill(-40+p[0]+160*min(1,frameCount / 440), p[1], p[2]*2, max(0, 1 - frameCount / 440))
+				let spread = 8 * min(1, frameCount / 400)
+				circle(px+random(-spread, spread), py+random(-spread, spread), random() * 4)
+			}
+
+			//fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			let p = pal[k % pal.length]
+			fill(-40+p[0]+160*min(1,frameCount / 440), p[1]*max(0, 1-frameCount / 1000), p[2]*1.35*(frameCount / 200), max(0, 1 - frameCount / 440))
+			circle(px, py, 2)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251894","Natural 11","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let pal = [[94, 81, 42], [90, 73, 47], [86, 69, 59], [84, 84, 71], [106, 58, 48], [105, 84, 37]]
+
+let x = []
+let y = []
+
+let n = 150
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(900, 900)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = i
+		y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*1;
+	context.shadowOffsetY = cos(frameCount /100)*1;
+	context.shadowBlur = 2; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.75)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 500
+	
+	for (let i = 10; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*(1e10+k*10))/500
+			y[k] += 0.001 - cos(e*(1e10+k*10))/500
+			
+			c = acos(sin(x[k]/3)) / 1.5708
+			d = acos(sin(y[k]/3)) / 1.5708
+
+			let px = ((floor(c * width)+width/2)) % width
+			let py = ((floor(d * height)))
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			
+			if (random() > 0.9) {
+				let p = pal[k % pal.length]
+				fill(p[0]/8, p[1], p[2]*2, 0.025)
+				let spread = 32
+				circle(px+random(-spread, spread), py+random(-spread, spread), random() * 16)
+			}
+
+			//fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			let p = pal[k % pal.length]
+			fill(p[0] /3, p[1]*max(0, 1-frameCount / 1000), p[2]*1.35*(frameCount / 200))
+			circle(px, py, 2)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251882","Natural 10","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let pal = [[94, 81, 42], [90, 73, 47], [86, 69, 59], [84, 84, 71], [106, 58, 48], [105, 84, 37]]
+
+let x = []
+let y = []
+
+let n = 100
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = -i * 4
+		y[i] = i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /10)*1;
+	context.shadowOffsetY = cos(frameCount /40)*1;
+	context.shadowBlur = 1; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.25)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 5000
+	
+	for (let i = 10; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*(1e10+k*100))/200
+			y[k] += /*0.000001 - */cos(e*(1e10+k*100))/200
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width))) % width
+			let py = ((floor(d * height))) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			
+			if (random() > 0.9) {
+				let p = pal[k % pal.length]
+				fill(p[0], p[1], p[2]*1, 0.05)
+				let spread = 16
+				circle(px+random(-spread, spread), py+random(-spread, spread), random() * 24)
+			}
+
+			//fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			let p = pal[k % pal.length]
+			fill(p[0] + ((frameCount+k*1)%60 - 30), p[1]*1.5, p[2]*1.45)
+			circle(px, py, 2)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251837","Tubes fun plasticine","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 50
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = -i * 4
+		y[i] = i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	strokeWeight(8)
+	//noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*2;
+	context.shadowOffsetY = cos(frameCount /100)*2;
+	context.shadowBlur = 2; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 1)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	e += frameCount / 500
+	
+	for (let i = 10; i--;){
+		for (let k = 1; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += 0.01 + sin(e*e+k*1)/100
+			y[k] += 0.01 - cos(e*e+k*1)/100
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width))) % width
+			let py = ((floor(d * height))) % height
+			
+			if (px < 0 || px > width) continue
+			if (py < 0 || py > height) continue
+
+			/*
+			if (random() > 0.99) {
+				fill(0, 100, random() * 100, 1)
+				circle(px, py, random() * 4)
+			}*/
+
+			if (k > n / 2) {
+				stroke((64+((frameCount>>3))+k*10)%300, 75, 90, 0.5)
+				fill(0, 0, 0, 0.0025)
+			} else {
+				fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.5)
+				stroke(0, 0, 0, 0.025)
+			}
+			circle(px, py, 8+k)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251836","Euler spiral 3 plasticine","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 50
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = -i * 4
+		y[i] = i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	strokeWeight(8)
+	//noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*2;
+	context.shadowOffsetY = cos(frameCount /100)*2;
+	context.shadowBlur = 2; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 1)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	e += frameCount / 50000
+	
+	for (let i = 10; i--;){
+		for (let k = 1; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*e*k*1)/100
+			y[k] += /*0.000001 - */cos(e*e*k*1)/100
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width))) % width
+			let py = ((floor(d * height))) % height
+			
+			if (px < 0 || px > width) continue
+			if (py < 0 || py > height) continue
+
+			/*
+			if (random() > 0.99) {
+				fill(0, 100, random() * 100, 1)
+				circle(px, py, random() * 4)
+			}*/
+
+			stroke((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			fill(0, 0, 0, 0.0025)
+			circle(px, py, 8+k)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251726","Euler spiral 2 plasticine","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 50
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = -i * 4
+		y[i] = i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*2;
+	context.shadowOffsetY = cos(frameCount /100)*2;
+	context.shadowBlur = 2; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 1)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 5000
+	
+	for (let i = 10; i--;){
+		for (let k = 1; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*e*k*10)/100
+			y[k] += /*0.000001 - */cos(e*e*k*10)/100
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width))) % width
+			let py = ((floor(d * height))) % height
+			
+			if (px < 0 || px > width) continue
+			if (py < 0 || py > height) continue
+
+			/*
+			if (random() > 0.99) {
+				fill(0, 100, random() * 100, 1)
+				circle(px, py, random() * 4)
+			}*/
+
+			fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			circle(px, py, 8)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251723","Euler spiral 2","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 50
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = -i * 4
+		y[i] = i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*2;
+	context.shadowOffsetY = cos(frameCount /100)*2;
+	context.shadowBlur = 2; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.25)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 5000
+	
+	for (let i = 10; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*1e10+k*10)/100
+			y[k] += /*0.000001 - */cos(e*1e10+k*10)/100
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width))) % width
+			let py = ((floor(d * height))) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			/*
+			if (random() > 0.99) {
+				fill(0, 100, random() * 100, 1)
+				circle(px, py, random() * 4)
+			}*/
+
+			fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			circle(px, py, 8)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251721","Euler spiral","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 50
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	colorMode(HSB, 360, 100, 100, 1)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = -i * 4
+		y[i] = i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	noStroke();
+	var context = drawingContext
+	context.shadowOffsetX = sin(frameCount /100)*2;
+	context.shadowOffsetY = cos(frameCount /100)*2;
+	context.shadowBlur = 2; // more can be fun also
+	context.shadowColor = ""rgba(0, 0, 0, 0.25)"";
+	
+	//background(0)
+	
+	//loadPixels()
+	
+	e += frameCount / 5000
+	
+	for (let i = 10; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*1e9+k*10)/200
+			y[k] += /*0.000001 - */cos(e*1e9+k*10)/200
+			
+			c = acos(sin(x[k]/5)) / 1.5708
+			d = acos(sin(y[k]/5)) / 1.5708
+
+			let px = ((floor(c * width))) % width
+			let py = ((floor(d * height))) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			/*
+			if (random() > 0.99) {
+				fill(0, 100, random() * 100, 1)
+				circle(px, py, random() * 4)
+			}*/
+
+			fill((64+((frameCount>>3))+k*10)%300, 75, 90, 0.25)
+			circle(px, py, 8)
+			/*
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2*/
+		}
+	}
+	//updatePixels()
+}"
+"1251690","Psyc 2","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 200
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 1e1*i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount/2000
+	
+	let px, py
+	
+	for (let i = 100; i--;){
+		let ni = (0.5-i / 1000)*2
+		for (let k = 1; k < n; k += 1) {
+			let nk = abs(0.5 - k / n)*2
+		
+			let t = e**e+ni*PI*2
+			
+			x[k] += (ni * cos(t+ni*PI*2) * ni * sin(t))/10000
+			y[k] += (ni * sin(t+ni*PI*2) * ni * cos(t))/10000
+			
+			c = acos(sin(x[k]/1)) / 1.5708
+			d = acos(sin(y[k]/1)) / 1.5708
+
+			px = ((floor(c * width)) + width/2) % width
+			py = ((floor(d * height)) + height/2) % height
+
+			let index1 = (px + py * width) * 4
+			let index2 = ((width - px) + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+			
+			let r = ((k/8+(frameCount>>5))&7) * (1-abs(0.5 - (px / width * py / height)) * 2)
+			let g = 1 * (1-abs(0.5 - (px / width * py / height)) * 2)
+			let b = ((i+(frameCount>>4))&7) * (1-abs(0.5 - (px / width * py / height)) * 2)
+
+			pixels[index1+0] += r
+			pixels[index1+1] += g
+			pixels[index1+2] += b
+			
+			let index1i = width * height * 4 - index1
+			pixels[index1i+0] += r
+			pixels[index1i+1] += g
+			pixels[index1i+2] += b
+			
+			pixels[index2+0] += r
+			pixels[index2+1] += g
+			pixels[index2+2] += b
+			
+			let index2i = width * height * 4 - index2
+			pixels[index2i+0] += r
+			pixels[index2i+1] += g
+			pixels[index2i+2] += b
+		}
+	}
+	updatePixels()
+}"
+"1251686","Psyc 1","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 100
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 1e1+i
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount/200000
+	
+	let px, py
+	
+	for (let i = 100; i--;){
+		let ni = (0.5-i / 2000)*2
+		for (let k = 1; k < n; k += 1) {
+			let nk = (0.5 - k / n)*2
+		
+			let t = e**e/nk*PI*2000
+			
+			x[k] -= (ni * cos(t) + nk * sin(1/t**e))/8000
+			y[k] += (ni * sin(t) - nk * cos(1/t**e))/8000
+			
+			c = acos(sin(x[k]/2+nk)) / 1.5708
+			d = acos(sin(y[k]/2+nk)) / 1.5708
+
+			px = ((floor(c * width)) + width/4) % width
+			py = ((floor(d * height)) + height/4) % height
+
+			let index1 = (px + py * width) * 4
+			let index2 = ((width - px) + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+			
+			let r = ((k/8+(frameCount>>5))&7) * (1-abs(0.5 - (px / width * py / height)) * 2)
+			let g = 1 * (1-abs(0.5 - (px / width * py / height)) * 2)
+			let b = ((i+(frameCount>>4))&7) * (1-abs(0.5 - (px / width * py / height)) * 2)
+
+			pixels[index1+0] += r
+			pixels[index1+1] += g
+			pixels[index1+2] += b
+			
+			let index1i = width * height * 4 - index1
+			pixels[index1i+0] += r
+			pixels[index1i+1] += g
+			pixels[index1i+2] += b
+			
+			pixels[index2+0] += r
+			pixels[index2+1] += g
+			pixels[index2+2] += b
+			
+			let index2i = width * height * 4 - index2
+			pixels[index2i+0] += r
+			pixels[index2i+1] += g
+			pixels[index2i+2] += b
+		}
+	}
+	updatePixels()
+}"
+"1251463","Natural 11","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 50
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount / 5000
+	
+	let px, py
+	
+	for (let i = 500; i--;){
+		let ni = (0.5-i / 1000)*2
+		for (let k = 1; k < n; k += 1) {
+			let nk = (0.5 - k / n)*2
+		
+			x[k] += /*0.000001 + */sin(e**ni*k+nk*PI*2)/3000
+			y[k] += /*0.000001 - */cos(e**ni*k+nk*PI*2)/3000
+			
+			c = acos(sin(x[k]/1**k)) / 1.5708/2
+			d = acos(sin(y[k]/1**k)) / 1.5708/2
+
+			px = ((floor(c * width)) + width) % width
+			py = ((floor(d * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/2+(frameCount>>5))&7
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += 1
+		}
+	}
+	updatePixels()
+}"
+"1251459","Natural 10","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 10
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount / 300
+	
+	let px, py
+	
+	for (let i = 500; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = (0.5 - k / n)*2
+		
+			x[k] += /*0.000001 + */sin(e*e**nk*PI*2)/5000
+			y[k] += /*0.000001 - */cos(e*e**nk*PI*2)/5000
+			
+			c = acos(sin(x[k]/4+nk)) / 1.5708/2
+			d = acos(sin(y[k]/4)) / 1.5708/2
+
+			px = ((floor(c * width)) + width) % width
+			py = ((floor(d * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/2+(frameCount>>5))&7
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += 1
+		}
+	}
+	updatePixels()
+}"
+"1251451","Neutron 2","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 500
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	let px, py
+	
+	e = frameCount / 1.5
+	for (let i = 100; i--;){
+		for (let k = 1; k < n; k += 1) {
+			e += frameCount / 200000000000/k
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e**e**nk*PI*100)
+			y[k] += /*0.000001 - */cos(e**e**nk*PI*100)
+			
+			c = acos(sin(x[k]/i/10)) / 1.5708/2
+			d = acos(sin(y[k]/i/10)) / 1.5708/2
+
+			px = ((floor(d * width)) + width) % width
+			py = ((floor(c * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/100+(frameCount>>3))&7
+			pixels[index+1] += 2
+			pixels[index+2] += (i/10+(frameCount>>10))&7
+		}
+	}
+	updatePixels()
+}"
+"1251450","Neutron","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 200
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	let px, py
+	
+	e = frameCount / 10
+	for (let i = 50; i--;){
+		for (let k = 0; k < n; k += 1) {
+			e += frameCount / 2000/(1+k)
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e**e+nk*PI*40)
+			y[k] += /*0.000001 - */cos(e**e+nk*PI*40)
+			
+			c = acos(sin(x[k]/i/10)) / 1.5708/2
+			d = acos(sin(y[k]/i/10)) / 1.5708/2
+
+			px = ((floor(d * width)) + width) % width
+			py = ((floor(c * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/100+(frameCount>>3))&7
+			pixels[index+1] += 2
+			pixels[index+2] += (i/10+(frameCount>>10))&7
+		}
+	}
+	updatePixels()
+}"
+"1251444","Natural 6","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 200
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	let px, py
+	
+	e = frameCount / 2
+	for (let i = 500; i--;){
+		for (let k = 0; k < n; k += 1) {
+			e += frameCount / 20000000/(1+k)/10000
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e**e*nk*PI*2+i/200)/500
+			y[k] += /*0.000001 - */cos(e**e*nk*PI*2+i/200)/500
+			
+			c = acos(sin(x[k]/1)) / 1.5708/2
+			d = acos(sin(y[k]/1)) / 1.5708/2
+
+			px = ((floor(d * width)) + width) % width
+			py = ((floor(c * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/100+(frameCount>>3))&7
+			pixels[index+1] += 2
+			pixels[index+2] += (i/10+(frameCount>>10))&7
+		}
+	}
+	updatePixels()
+}"
+"1251442","Natural 4","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 200
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	let px, py
+	
+	e = frameCount / 10
+	for (let i = 500; i--;){
+		for (let k = 0; k < n; k += 1) {
+			e += frameCount / 20000000/(1+k)/10000
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e**e*nk*PI*2+i/300)/1500
+			y[k] += /*0.000001 - */cos(e**e*nk*PI*2+i/300)/1500
+			
+			c = acos(sin(x[k]/4)) / 1.5708/2
+			d = acos(sin(y[k]/4)) / 1.5708/2
+
+			px = ((floor(d * width)) + width) % width
+			py = ((floor(c * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/100+(frameCount>>3))&7
+			pixels[index+1] += 2
+			pixels[index+2] += (i/10+(frameCount>>10))&7
+		}
+	}
+	updatePixels()
+}"
+"1251437","Natural 3","mySketch","// result from experiments with oscillators
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 10
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount / 300
+	
+	let px, py
+	
+	for (let i = 500; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*e+nk*PI*2)/5000
+			y[k] += /*0.000001 - */cos(e*e+nk*PI*2)/5000
+			
+			c = acos(sin(x[k]/4)) / 1.5708/2
+			d = acos(sin(y[k]/4)) / 1.5708/2
+
+			px = ((floor(c * width)) + width) % width
+			py = ((floor(d * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/2+(frameCount>>5))&7
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += 1
+		}
+	}
+	updatePixels()
+}"
+"1251435","Natural 2","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 5
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount / 300
+	
+	let px, py
+	
+	for (let i = 500; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*1e7+k*1)/5000
+			y[k] += /*0.000001 - */cos(e*1e7+k*1)/5000
+			
+			c = acos(sin(x[k]/4)) / 1.5708/2
+			d = acos(sin(y[k]/4)) / 1.5708/2
+
+			px = ((floor(c * width)) + width) % width
+			py = ((floor(d * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			pixels[index+0] += (k/2+(frameCount>>5))&7
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += 1
+		}
+	}
+	updatePixels()
+}"
+"1251432","Natural","mySketch","// result from experiments with oscillators, what is it ?
+// many parameters can be varied for very different results
+
+let x = []
+let y = []
+
+let n = 5
+
+function setup() {
+	pixelDensity(1);
+	createCanvas(1000, 1000)
+	background(0)
+	
+	for (let i = 0; i < n; i += 1) {
+		x[i] = y[i] = 0
+	}
+}
+
+let c = 0, d = 0, e = 0
+
+function draw() {
+	//background(0)
+	
+	loadPixels()
+	
+	e += frameCount / 500
+	
+	for (let i = 500; i--;){
+		for (let k = 0; k < n; k += 1) {
+			let nk = k / n
+		
+			x[k] += /*0.000001 + */sin(e*1e9+k*10)/8000
+			y[k] += /*0.000001 - */cos(e*1e9+k*10)/8000
+			
+			c = acos(sin(x[k]/3)) / 1.5708/2
+			d = acos(sin(y[k]/3)) / 1.5708/2
+
+			let px = ((floor(c * width)) + width) % width
+			let py = ((floor(d * height)) + height) % height
+
+			let index = (px + py * width) * 4
+			//if (index >= width * height * 4 || index < 0) continue
+
+			/*
+			if (random() > 0.9999) {
+				pixels[index+0] += 255
+				pixels[index+4] += 255
+				pixels[index-4] += 255
+				pixels[index+8] += 255
+				pixels[index-8] += 255
+				pixels[index+width*4] += 255
+				pixels[index-width*4] += 255
+				pixels[index+width*4+4] += 255
+				pixels[index+width*4-4] += 255
+				pixels[index-width*4-4] += 255
+				pixels[index-width*4+4] += 255
+				pixels[index+width*8] += 255
+				pixels[index-width*8] += 255
+			}
+*/
+			pixels[index+0] += 1
+			pixels[index+1] += (i+(frameCount>>4))&3
+			pixels[index+2] += (k/2+(frameCount>>5))&2
+		}
+	}
+	updatePixels()
+}"
+"1250611","Volumetric minsky","mySketch","/**
+	* Sphere instead of a cube + better visuals
+	*/
+
+let frame = 0;
+
+let step = 0.004; // control surface stepping, lower = higher quality (but too slow for realtime)
+let scale = 1; // cube scale
+
+let beach;
+
+let rf = 0
+let gf = 0
+let bf = 0
+
+let depthbuffer = [];
+
+function preload() {
+    beach = loadImage('tex.png');
+}
+
+function setup() {
+	createCanvas(1024, 1024);
+
+	background(0);
+
+	noStroke();
+
+	beach.loadPixels();
+	
+	noiseDetail(7, 0.7);
+
+	// initialize depth buffer
+	for (let i = 0.0; i <= width; i += 1) {
+		for (let j = 0.0; j <= height; j += 1) {
+			depthbuffer[i + j * width] = -Infinity;
+		}
+	}
+}
+let zz = -1
+let frame2 = 40e6
+function draw() {
+	frame2 = 10e4
+	frameCount = 40e5
+	mx = 0
+	my = 400
+//	loadPixels()
+	for (let i = 0.0; i <= 10000; i += 1) {
+		draw3d(i);
+	}
+	zz += 0.005
+	//updatePixels();
+}
+
+let mx = 0
+let my = 400
+let mx2 = 0
+let my2 = 400
+
+let x = 0, y = 0, z = 0;
+let offset = 0;
+
+function draw3d(ik) {
+	//background(0);
+	//fill(0, 0, 0, 48);
+	//rect(0, 0, width, height);
+	
+	let rxa = 0.1// + 0.03 * frame;
+	let rya = 0.25// + 0.04 * frame;
+
+	// rotation values
+	let crx = cos(rxa);
+	let cry = cos(rya);
+	let srx = sin(rxa);
+	let sry = sin(rya);
+	
+	// rm = rotation matrix
+	let rm = [0,0,0,0,0,0,0,0,0];
+
+	rm[0] = cry;     /*rm[1] = 0.0f;*/ rm[2] = -sry;
+	rm[3] = sry * srx; rm[4] = crx;    rm[5] = cry * srx;
+	rm[6] = sry * crx; rm[7] = -srx;   rm[8] = cry * crx;
+	
+	let x2 = width / 2;
+	let y2 = height / 2;
+	
+	let params = [28, // increase for more details (aka iteration)
+								24,
+								5, // scale
+								12, // 13 for less details
+								6,18,12,23];
+	frameCount+=10e4
+		mx = (mx + (mx >> params[0])) - (my << 2) + ((frameCount >> params[1]));
+		my = (my - (mx >> params[2])) + ((mx >> 1) - (my >> params[3])) - ((frameCount >> params[4]) & ((mx << params[5])));
+		mx = (mx + (mx >> params[6])) - (my << 2) + ((frameCount >> params[1]));
+	/*	let mx3 = mx
+	if (mx > width/2) mx3 = width/2
+	let my3 = my
+	if (my > width/2) my3 = height/2*/
+	let ff = frame2
+		mx2 = (mx2 + (mx2 >> params[0])) - (my2 << 2) + ((ff >> params[1]));
+		my2 = (my2 - (mx2 >> params[2])) + ((mx2 >> 1) - (my2 >> params[3])) - ((ff >> params[4]) & ((mx2 << params[5])));
+		mx2 = (mx2 + (mx2 >> params[6])) - (my2 << 2) + ((ff >> params[1]));
+
+	
+  let cmx = (/*width / 2 + */(mx >> params[7])) / width
+	let cmy = (/*height / 2 +*/(my >> params[7])) / height
+  let cmx2 = (/*width / 2 + */(mx2 >> params[7])) / width
+	let cmy2 = (/*height / 2 +*/ (my2 >> params[7])) / height
+	
+	x = cmx
+	y = cmy
+	z = zz
+	
+	// step cube volume along X,Y,Z in normalized space
+	//let offset = frameCount / 512;
+	
+	// we can also do stochastic rendering
+	//x = random();
+	//y = random();
+	//z = random();
+	
+	
+	
+	// progessive rendering part (offset is unused; this was to speedup rendering)
+/*	x += step + offset;
+	if (x >= 1.01) {
+		x = 0;
+		y += step;
+		if (y >= 1.01) {
+			x = 0;
+			y = 0;
+			z += step;
+		}
+	}
+
+	// idle once rendered
+	if (z >= 1.01) {
+		return;
+	}*/
+	//
+	
+					// doing good texturing is simple with this rendering method...
+			/*	let u = max(min(x, 1), 0);
+				let v = max(min(1 - y, 1), 0);
+				let texture_index = (floor(u * (beach.width - 1)) + floor(v * (beach.height - 1)) * beach.width) * 4;
+				let texture_red = beach.pixels[texture_index];
+				let texture_green = beach.pixels[texture_index + 1];
+				let texture_blue = beach.pixels[texture_index + 2];
+	*/
+	// skip black parts
+	//if ((texture_red + texture_green + texture_blue) / 3 <= 0) return
+	
+	//for (z = 0.0; z <= 1.0; z += inc) {
+		let vr = [0,0,0];
+
+		let pz = z//2.0 * z - 1.0; // normalize screen space
+
+		vr[2] = pz * scale;
+		//for (y = 0.0; y <= 1.0; y += inc) {
+			let py = y//2.0 * y - 1.0;
+
+			vr[1] = py * scale;
+			//for (x = 0.0; x <= 1.0; x += inc) {
+				// volumetric data filter (eg. we only want the surface)
+	let px = x//(2.0 * x - 1.0);
+	//let s = sqrt(px*px+py*py+pz*pz)-1
+	//if (s <= -0.02 || s >= 0.02) return
+				//if (x > 0.0 && x < (1.0 - step) && y > 0.0 && y < (1.0 - step) && z > 0.0 && z < (1.0 - step)) return;
+				// fun filter to carve holes on the surface
+				//if (noise(x, y, z) > 0.9) return;
+				
+				
+				vr[0] = px * scale;
+
+				// rotate/transform our points
+				let vrr = [
+						rm[0] * vr[0] + rm[3] * vr[1] + rm[6] * vr[2],
+						rm[1] * vr[0] + rm[4] * vr[1] + rm[7] * vr[2],
+						rm[2] * vr[0] + rm[5] * vr[1] + rm[8] * vr[2]
+                ];
+			
+				// compute length & normalize
+				let le = sqrt((vrr[0] * vrr[0]) + (vrr[1] * vrr[1]) + (vrr[2] * vrr[2]));
+			  let vrn = [ vrr[0] / le, vrr[1] / le, vrr[2] / le ];
+	
+				// since we were in normalized space we scale it to screen space and translate it at the center of the screen
+				let posx = x2 - round(vrr[0] * height);
+				let posy = y2 - round(vrr[1] * height);
+	
+				let depth = vrn[2];
+	
+				// z-buffer (do nothing if farther; replace if nearest)
+	/*			let zbuffer_index = posx + posy * width;
+				let zb_depth = depthbuffer[zbuffer_index];
+				if (zb_depth > depth) {
+					return;
+				}
+	
+				depthbuffer[zbuffer_index] = depth;
+	*/
+				// compute normal from depth buffer using derivatives
+/*
+				let dzdx = (depthbuffer[zbuffer_index + 1] - depthbuffer[zbuffer_index - 1]) / 2.0;
+				let dzdy = (depthbuffer[zbuffer_index + width] - depthbuffer[zbuffer_index - width]) / 2.0;
+	
+				let normal = createVector(-dzdx, -dzdy, 1.0);
+				normal.normalize();
+*/
+	
+				// point shade based on normalized Z value
+				//let brightness_fix = 2 - max(max(texture_red, texture_green), texture_blue) / 255;
+				//depth *= brightness_fix; //  * noise(x, y, z) // for fun
+	/*	rf += 2&(ik/1000);
+		gf += 1;
+		bf += 1;
+	rf%=65536/100
+	gf%=65536/100
+	bf%=65536/100
+	fill(rf, gf, bf)*/
+/*	
+	let index = (posx + posy * width) * 4
+	if (index < 0 && index >= ((width-1) * (height-1)*4)) return
+	pixels[index] += (((frameCount*depth)>>25))%255
+	pixels[index+1] +=(((frameCount*depth)>>24))%255
+	pixels[index+2] +=(((frameCount*depth)>>21))%255*/
+				fill(100*depth+125, 100*depth+125, 100*depth+125, 32);
+	//if (s <= -0.01)
+	//			noStroke()
+	//else if(s >= 0.01) 
+	//	stroke(texture_red * depth, texture_green * depth, texture_blue * depth);
+				
+				//point(posx, posy);
+				rect(posx, posy, 1, 1);
+			//}
+		//}
+	//}
+	
+}"
+"1249848","Volumetric rendering sphere","mySketch","/**
+	* Sphere instead of a cube + better visuals
+	*/
+
+let frame = 0;
+
+let step = 0.003; // control surface stepping, lower = higher quality (but too slow for realtime)
+let scale = 0.3; // cube scale
+
+let beach;
+
+let depthbuffer = [];
+
+function preload() {
+    beach = loadImage('tex.png');
+}
+
+function setup() {
+	createCanvas(windowWidth, windowHeight);
+
+	background(0);
+
+	noStroke();
+
+	beach.loadPixels();
+	
+	noiseDetail(7, 0.7);
+
+	// initialize depth buffer
+	for (let i = 0.0; i <= width; i += 1) {
+		for (let j = 0.0; j <= height; j += 1) {
+			depthbuffer[i + j * width] = -Infinity;
+		}
+	}
+}
+
+function draw() {
+	// progressive rendering
+	for (let i = 0.0; i <= 100000; i += 1) {
+		draw3d();
+	}
+}
+
+let x = 0, y = 0, z = 0;
+let offset = 0;
+
+function draw3d() {
+	//background(0);
+	//fill(0, 0, 0, 48);
+	//rect(0, 0, width, height);
+	
+	let rxa = 0.3 + 0.03 * frame;
+	let rya = 0.5 + 0.04 * frame;
+
+	// rotation values
+	let crx = cos(rxa);
+	let cry = cos(rya);
+	let srx = sin(rxa);
+	let sry = sin(rya);
+	
+	// rm = rotation matrix
+	let rm = [0,0,0,0,0,0,0,0,0];
+
+	rm[0] = cry;     /*rm[1] = 0.0f;*/ rm[2] = -sry;
+	rm[3] = sry * srx; rm[4] = crx;    rm[5] = cry * srx;
+	rm[6] = sry * crx; rm[7] = -srx;   rm[8] = cry * crx;
+	
+	let x2 = width / 2;
+	let y2 = height / 2;
+	
+	// step cube volume along X,Y,Z in normalized space
+	//let offset = frameCount / 512;
+	
+	// we can also do stochastic rendering
+	//x = random();
+	//y = random();
+	//z = random();
+	
+	// progessive rendering part (offset is unused; this was to speedup rendering)
+	x += step + offset;
+	if (x >= 1.01) {
+		x = 0;
+		y += step;
+		if (y >= 1.01) {
+			x = 0;
+			y = 0;
+			z += step;
+		}
+	}
+
+	// idle once rendered
+	if (z >= 1.01) {
+		return;
+	}
+	//
+	
+					// doing good texturing is simple with this rendering method...
+				let u = max(min(x, 1), 0);
+				let v = max(min(1 - y, 1), 0);
+				let texture_index = (floor(u * (beach.width - 1)) + floor(v * (beach.height - 1)) * beach.width) * 4;
+				let texture_red = beach.pixels[texture_index];
+				let texture_green = beach.pixels[texture_index + 1];
+				let texture_blue = beach.pixels[texture_index + 2];
+	
+	// skip black parts
+	//if ((texture_red + texture_green + texture_blue) / 3 <= 0) return
+	
+	//for (z = 0.0; z <= 1.0; z += inc) {
+		let vr = [0,0,0];
+
+		let pz = 2.0 * z - 1.0; // normalize screen space
+
+		vr[2] = pz * scale;
+		//for (y = 0.0; y <= 1.0; y += inc) {
+			let py = 2.0 * y - 1.0;
+
+			vr[1] = py * scale;
+			//for (x = 0.0; x <= 1.0; x += inc) {
+				// volumetric data filter (eg. we only want the surface)
+	let px = (2.0 * x - 1.0);
+	let s = sqrt(px*px+py*py+pz*pz)-1
+	if (s <= -0.02 || s >= 0.02) return
+				//if (x > 0.0 && x < (1.0 - step) && y > 0.0 && y < (1.0 - step) && z > 0.0 && z < (1.0 - step)) return;
+				// fun filter to carve holes on the surface
+				if (noise(x, y, z) > 0.9) return;
+				
+				
+				vr[0] = px * scale;
+
+				// rotate/transform our points
+				let vrr = [
+						rm[0] * vr[0] + rm[3] * vr[1] + rm[6] * vr[2],
+						rm[1] * vr[0] + rm[4] * vr[1] + rm[7] * vr[2],
+						rm[2] * vr[0] + rm[5] * vr[1] + rm[8] * vr[2]
+                ];
+			
+				// compute length & normalize
+				let le = sqrt((vrr[0] * vrr[0]) + (vrr[1] * vrr[1]) + (vrr[2] * vrr[2]));
+			  let vrn = [ vrr[0] / le, vrr[1] / le, vrr[2] / le ];
+	
+				// since we were in normalized space we scale it to screen space and translate it at the center of the screen
+				let posx = x2 - round(vrr[0] * height);
+				let posy = y2 - round(vrr[1] * height);
+	
+				let depth = vrn[2];
+	
+				// z-buffer (do nothing if farther; replace if nearest)
+	/*			let zbuffer_index = posx + posy * width;
+				let zb_depth = depthbuffer[zbuffer_index];
+				if (zb_depth > depth) {
+					return;
+				}
+	
+				depthbuffer[zbuffer_index] = depth;
+	*/
+				// compute normal from depth buffer using derivatives
+/*
+				let dzdx = (depthbuffer[zbuffer_index + 1] - depthbuffer[zbuffer_index - 1]) / 2.0;
+				let dzdy = (depthbuffer[zbuffer_index + width] - depthbuffer[zbuffer_index - width]) / 2.0;
+	
+				let normal = createVector(-dzdx, -dzdy, 1.0);
+				normal.normalize();
+*/
+	
+				// point shade based on normalized Z value
+				let brightness_fix = 2 - max(max(texture_red, texture_green), texture_blue) / 255;
+				depth *= brightness_fix; //  * noise(x, y, z) // for fun
+
+				fill(100*depth+155, 100*depth+155, 100*depth+155);
+	if (s <= -0.01)
+				noStroke()
+	else if(s >= 0.01) 
+		stroke(texture_red * depth, texture_green * depth, texture_blue * depth);
+				
+				//point(posx, posy);
+				rect(posx, posy, 1, 1);
+			//}
+		//}
+	//}
+}"
 "1245654","minsky overflow layered","mySketch","// layered / offseted + colors
 
 let xx = []
@@ -95,7 +2077,7 @@ let ay = 0;
 let histo = [];
 
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(800, 800);
   background(0);
 	
 	noiseDetail(7, 0.7);
@@ -123,23 +2105,23 @@ function r1(x, y) {
 }
 
 function r2(x, y) {
-	return { x: (width / 0.5 + x / 3) , y: y };
+	return { x: (width / 1 + x / 8) , y: y };
 }
 
 function r3(x, y) {
-	return { x: (width / 1 + x / 1.5) - y /0.5, y: y };
+	return { x: (width / 8 + x / 1.5) - y / 1, y: y };
 }
 
 function a1(x, y) {
-	return { x: (1 - x / (PI * 2.5)), y: y / 1 - x / (PI * 2.) };
+	return { x: (1 - x / (PI * 1.25)), y: y / 8 - x / (PI * 2.) };
 }
 
 function a2(x, y) {
-	return { x: x - 0.75, y: (1 + y * 1) / 1.25 };
+	return { x: x - 0.25, y: (1 + y * 0.7) / 1.25 };
 }
 
 function a3(x, y) {
-	return { x: x / (3.14 / 2) - y / (3.14 / 2), y: y * 0.25 + x * PI / 16};
+	return { x: x / (3.14 / 1) - y / (3.14 / 2), y: y * 0.25 + x * PI / 8};
 }
 
 var r1 = [r1, r2, r3];
@@ -151,7 +2133,7 @@ function draw() {
 	//fill(0, 0, 0, 1);
 	//rect(0, 0, width, height);
 	
-	let renderAtFrame = 60 * 16;
+	let renderAtFrame = 60 * 8;
 	
 	if (frameCount <= renderAtFrame) {
 		for (let i = 0; i < 5000; i += 1) {
@@ -165,24 +2147,22 @@ function draw() {
 
 			ax = a.x; ay = a.y;
 
-			stroke(0, 0, 255, 0.035);
+			stroke(0, 0, 255, 0.025);
 
 			if (iter > 20) {
-				let x = width / 2 + rx * (sin(ax/2)); //* sqrt((ax+ax) * (ay+ay)*0.05)*2);//(sin(ax * PI * 2) * cos(ay * PI * 2));
-				let y = height / 2 + ry * (cos(ay/0.01)); //* sqrt((ax+ax) * (ay+ay)*0.05)*2);
+				let x = width / 2 + rx * (sin(ax/2.5)); //* sqrt((ax+ax) * (ay+ay)*0.05)*2);//(sin(ax * PI * 2) * cos(ay * PI * 2));
+				let y = height / 2 + ry * (cos(ay)); //* sqrt((ax+ax) * (ay+ay)*0.05)*2);
 				// / 0.125 is kinda fun also
 				
-				let px = /*width / 2 - */x;
-				let py = /*height / 2 -*/ y;
+				let px = width / 2 - x;
+				let py = height / 2 - y;
 
 				if (x < width && x > 0 && y < height && y > 0) {
 					push();
 					translate(width / 2, height / 2);
-					rotate(0.5+round(iter / 100) * PI + round(x/100 | y/100));
-					point(px/1.5, py/1.5);
-					point(width - px/1.5, py/1.5);
-					//point(width / 6 +py, px);
-					//point(-(width / 6 +py), px);
+					rotate(round(iter / 100) * PI / 5.0);
+					point(width / 6 +px, -py);
+					point(-(width / 6 +px), -py);
 					//translate(0, 0);
 					//rotate(round(iter / 100) * PI / 20);
 					//point(px, py);
