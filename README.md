@@ -17,7 +17,7 @@ This include generative art (algorithmic art), tiny code autonomous drawing algo
 
 `opexport` contain a full export (most recent but with no data) of all my Open Processing sketches, there may be some old duplicate / old versions of it in `p5js` or `P.js` directories, those contain data as well. Deprecated, see .csv for most recent one
 
-Complete screenshot previews of all sketches (captured from Open Processing; see below) : screenshot.jpg
+Complete screenshot (may be slightly out of date) previews of all sketches (captured from Open Processing; see below) : screenshot.jpg
 
 `opexport.py` is an Open Processing sketches exporter, it only work for single file sketches and does not import data, it use Python 3 / Selenium / Chromedriver to crawl sketches and save source code. It is deprecated, there is an export feature now.
 
